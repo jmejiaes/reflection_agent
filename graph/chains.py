@@ -1,34 +1,28 @@
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_openai import ChatOpenAI
+"""
+Cadenas LCEL (prompt | llm) por nodo.
+El LLM se obtiene de la estrategia del proveedor activo (patrón Strategy).
+"""
 
-# Se definen los prompts que se van a usar para los nodos de llms
-reflection_prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            "You are a viral twitter influencer grading a tweet. Generate critique and recommendations for the user's tweet."
-            "Always provide detailed recommendations, including requests for length, virality, style, etc.",
-        ),
-        MessagesPlaceholder(
-            variable_name="messages"
-        ),  # Se pone este placeholder para que se inserten los mensajes que se quiere que se tengan en cuenta en el historial
-    ]
-)
+from langchain_core.language_models import BaseChatModel
 
-generation_prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            "You are a twitter techie influencer assistant tasked with writing excellent twitter posts."
-            " Generate the best twitter post possible for the user's request."
-            " If the user provides critique, respond with a revised version of your previous attempts.",
-        ),
-        MessagesPlaceholder(variable_name="messages"),
-    ]
-)
+from config.llm_strategies import get_llm
+from config.settings import get_model_provider
+from graph.prompts import generation_prompt, reflection_prompt
 
-llm = ChatOpenAI(model='gpt-3.5-turbo')
 
-# Se definen los chains que facilitaran la invocacion de los llms para tareas especificas de ciertos nodos.
-generate_chain = generation_prompt | llm
-reflect_chain = reflection_prompt | llm
+def _get_llm() -> BaseChatModel:
+    """
+    Centraliza la obtención del LLM por defecto.
+
+    Proporciona un único punto donde definir cómo se resuelve el modelo de lenguaje que
+    se usará por defecto en los chains.
+    """
+    return get_llm(get_model_provider())
+
+
+def get_generate_chain():
+    return generation_prompt | _get_llm()
+
+
+def get_reflect_chain():
+    return reflection_prompt | _get_llm()
