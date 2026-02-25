@@ -21,7 +21,7 @@ def generation_node(state: MessageGraph) -> dict:
     """Generates a new tweet with the generation chain and updates the state."""
     chain = get_generate_chain()
     current_messages = _messages_input(state)
-    response = _chain_invoke_with_messages(current_messages)
+    response = _chain_invoke_with_messages(chain, current_messages)
     return {"messages": [response.content]}
 
 
@@ -29,5 +29,5 @@ def reflection_node(state: MessageGraph) -> dict:
     """Generates critique/recommendations and returns them as HumanMessage (prompt technique)."""
     chain = get_reflect_chain()
     current_messages = _messages_input(state)
-    response =  _chain_invoke_with_messages(current_messages)
+    response =  _chain_invoke_with_messages(chain, current_messages)
     return {"messages": [HumanMessage(content=response.content)]}
