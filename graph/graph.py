@@ -1,6 +1,6 @@
 """
-Construcción del grafo LangGraph.
-Punto único donde se definen nodos, edges y conditional edges (LLMOps).
+LangGraph construction.
+Single place where nodes, edges and conditional edges are defined (LLMOps).
 """
 
 from langgraph.graph import END, StateGraph
@@ -11,7 +11,7 @@ from graph.state import GENERATE, MessageGraph, REFLECT
 
 
 def should_continue(state: MessageGraph):
-    """Condición: seguir reflexionando o terminar según número de mensajes."""
+    """Condition: keep reflecting or end based on message count."""
     settings = get_settings()
     if len(state["messages"]) > settings.max_messages_before_end:
         return END
@@ -19,7 +19,7 @@ def should_continue(state: MessageGraph):
 
 
 def build_graph() -> StateGraph:
-    """Construye y compila el grafo de reflexión (generate → reflect → generate …)."""
+    """Builds and compiles the reflection graph (generate → reflect → generate …)."""
     builder = StateGraph(state_schema=MessageGraph)
     builder.add_node(GENERATE, generation_node)
     builder.add_node(REFLECT, reflection_node)

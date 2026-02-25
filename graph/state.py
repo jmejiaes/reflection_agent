@@ -1,6 +1,6 @@
 """
-Estado del grafo y constantes de nodos.
-Centralizar aquí permite evolucionar el state y el naming en un solo lugar (LLMOps).
+Graph state and node constants.
+Centralizing here allows evolving state and naming in one place (LLMOps).
 """
 
 from typing import Annotated, TypedDict
@@ -10,11 +10,11 @@ from langgraph.graph.message import add_messages
 
 
 class MessageGraph(TypedDict):
-    """Estado que cada nodo del grafo lee y actualiza."""
+    """State that each graph node reads and updates."""
 
     messages: Annotated[list[BaseMessage], add_messages]
 
 
-# Nombres de nodos (usados en edges y conditional_edges)
+# Node names (used in edges and conditional_edges)
 REFLECT = "reflect"
 GENERATE = "generate"

@@ -1,6 +1,6 @@
 """
-Nodos del grafo: generación y reflexión.
-Cada nodo recibe el state y devuelve actualizaciones (dict con 'messages').
+Graph nodes: generation and reflection.
+Each node receives the state and returns updates (dict with 'messages').
 """
 
 from langchain_core.messages import HumanMessage
@@ -10,7 +10,7 @@ from graph.chains import get_generate_chain, get_reflect_chain
 from graph.state import MessageGraph
 
 def _messages_input(state: MessageGraph) -> dict:
-    """Input que esperan los chains (prompt | llm): dict con 'messages'."""
+    """Input expected by chains (prompt | llm): dict with 'messages'."""
     return {"messages": state["messages"]}
 
 def _chain_invoke_with_messages(chain: Runnable, messages: dict):
@@ -18,7 +18,7 @@ def _chain_invoke_with_messages(chain: Runnable, messages: dict):
     return chain_response
 
 def generation_node(state: MessageGraph) -> dict:
-    """Genera un nuevo tweet con el chain de generación y actualiza el estado."""
+    """Generates a new tweet with the generation chain and updates the state."""
     chain = get_generate_chain()
     current_messages = _messages_input(state)
     response = _chain_invoke_with_messages(current_messages)
@@ -26,7 +26,7 @@ def generation_node(state: MessageGraph) -> dict:
 
 
 def reflection_node(state: MessageGraph) -> dict:
-    """Genera crítica/recomendaciones y las devuelve como HumanMessage (técnica de prompt)."""
+    """Generates critique/recommendations and returns them as HumanMessage (prompt technique)."""
     chain = get_reflect_chain()
     current_messages = _messages_input(state)
     response =  _chain_invoke_with_messages(current_messages)

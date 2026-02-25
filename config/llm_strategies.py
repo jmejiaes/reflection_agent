@@ -1,7 +1,7 @@
 """
-Patrón Strategy para proveedores de LLM.
-Cada estrategia conoce sus variables de entorno, defaults y cómo construir el chat model.
-Añadir un proveedor = implementar una estrategia y registrarla.
+Strategy pattern for LLM providers.
+Each strategy knows its env vars, defaults, and how to build the chat model.
+Adding a provider = implement a strategy and register it.
 """
 
 from functools import lru_cache
@@ -14,14 +14,14 @@ from config.settings import Provider
 
 
 class LLMProviderStrategy(Protocol):
-    """Contrato para estrategias de proveedor LLM.
+    """Contract for LLM provider strategies.
 
-    Las estrategias que implementen este protocolo deben poder construir
-    una instancia de BaseChatModel usando los parámetros y configuración
-    relevantes a su proveedor (modelo, API key, temperatura, etc).
+    Strategies implementing this protocol must be able to build
+    a BaseChatModel instance using parameters and configuration
+    relevant to their provider (model, API key, temperature, etc).
 
-    Implementar este método permite intercambiar entre proveedores
-    sin cambiar el resto del código.
+    Implementing this method allows swapping providers
+    without changing the rest of the code.
     """
 
     # Add Env vars and default values
@@ -68,5 +68,5 @@ _STRATEGIES: dict[Provider, LLMProviderStrategy] = {
 @lru_cache(maxsize=4)
 def get_llm(provider: Provider) -> BaseChatModel:
     if provider not in _STRATEGIES:
-        raise ValueError(f"Proveedor sin estrategia registrada: {provider}")
+        raise ValueError(f"Provider has no registered strategy: {provider}")
     return _STRATEGIES[provider].build_llm()

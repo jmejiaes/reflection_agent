@@ -1,6 +1,6 @@
 """
-Prompts del agente en un solo módulo.
-Facilita versionado, A/B testing y cambios sin tocar cadenas (LLMOps).
+Agent prompts in a single module.
+Makes versioning, A/B testing and changes easier without touching chains (LLMOps).
 """
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder

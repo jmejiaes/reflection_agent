@@ -1,6 +1,6 @@
 """
-Configuración cargada desde variables de entorno.
-Facilita cambiar modelo, temperatura y API keys sin tocar código (LLMOps).
+Configuration loaded from environment variables.
+Makes it easy to change model, temperature and API keys without touching code (LLMOps).
 """
 
 import os
@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Variables de entorno globales, las de proveedor viven en cada estrategia
+# Global env vars; provider-specific ones live in each strategy
 ENV_MODEL_PROVIDER = "MODEL_PROVIDER"
 ENV_REFLECTION_MAX_MESSAGES = "REFLECTION_MAX_MESSAGES"
 
@@ -22,18 +22,18 @@ class Provider(str, Enum):
     anthropic = "anthropic"
 
 
-# El decorador @lru_cache(maxsize=1) guarda en memoria el resultado de la función decorada
-# la primera vez que se llama, y devuelve ese mismo resultado en futuras llamadas.
-# Así, get_settings() solo creará una instancia de Settings una vez (singleton sencillo).
+# The @lru_cache(maxsize=1) decorator caches the result of the decorated function
+# on first call and returns that same result on future calls.
+# Thus get_settings() creates a Settings instance only once (simple singleton).
 @lru_cache(maxsize=1)
 def get_settings() -> "Settings":
     return Settings()
 
 
 class Settings:
-    """Configuración del agente (la aplicación).
+    """Agent (application) configuration.
 
-    Lo respectivo al LLM (modelo, API key, ...) lo resuelve la estrategia por proveedor.
+    LLM-related settings (model, API key, ...) are resolved by the provider strategy.
     """
 
     max_messages_before_end: int
@@ -54,4 +54,4 @@ def get_model_provider() -> Provider:
     try:
         return Provider(model_provider)
     except ValueError:
-        raise ValueError(f"Proveedor de modelo desconocido: {model_provider}")
+        raise ValueError(f"Unknown model provider: {model_provider}")

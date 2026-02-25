@@ -1,6 +1,6 @@
 """
-Cadenas LCEL (prompt | llm) por nodo.
-El LLM se obtiene de la estrategia del proveedor activo (patrón Strategy).
+LCEL chains (prompt | llm) per node.
+The LLM is obtained from the active provider's strategy (Strategy pattern).
 """
 
 from langchain_core.language_models import BaseChatModel
@@ -12,10 +12,10 @@ from graph.prompts import generation_prompt, reflection_prompt
 
 def _get_llm() -> BaseChatModel:
     """
-    Centraliza la obtención del LLM por defecto.
+    Centralizes default LLM resolution.
 
-    Proporciona un único punto donde definir cómo se resuelve el modelo de lenguaje que
-    se usará por defecto en los chains.
+    Provides a single place to define how the language model used by default
+    in the chains is resolved.
     """
     return get_llm(get_model_provider())
 

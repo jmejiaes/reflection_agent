@@ -1,7 +1,7 @@
-"""Configuración centralizada para LLMOps (modelo, env, parámetros)."""
+"""Centralized configuration for LLMOps (model, env, parameters)."""
 
 from config.settings import get_settings
 
-# Esto hace que cuando alguien haga 'from config import *' solo tendrá get_settings,
-# y esto además deja claro qué es lo "oficial" del paquete
+# This ensures 'from config import *' only exposes get_settings,
+# and makes the package's public API explicit
 __all__ = ["get_settings"]
