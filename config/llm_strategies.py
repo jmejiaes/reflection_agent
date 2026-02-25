@@ -35,7 +35,7 @@ class OpenAIStrategy:
     ENV_TEMPERATURE = "OPENAI_TEMPERATURE"
     ENV_API_KEY = "OPENAI_API_KEY"
 
-    DEFAULT_MODEL = "gpt-4o"
+    DEFAULT_MODEL = "gpt-3.5-turbo"
     DEFAULT_TEMPERATURE = 0.7
 
     def build_llm(self) -> BaseChatModel:
